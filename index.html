@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bleenkz - Space Blink Counter</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Animated Galaxy Background -->
+    <div class="galaxy-background">
+      <div class="stars"></div>
+      <div class="stars2"></div>
+      <div class="stars3"></div>
+      <div class="nebula"></div>
+      <div class="cosmic-dust"></div>
+
+      <!-- Planets -->
+      <div class="planet planet-1"></div>
+      <div class="planet planet-2">
+        <div class="planet-ring"></div>
+      </div>
+      <div class="planet planet-3"></div>
+      <div class="planet planet-4">
+        <div class="planet-ring"></div>
+      </div>
+      <div class="planet planet-5"></div>
+
+      <!-- Astronauts -->
+      <div class="astronaut astronaut-1"></div>
+      <div class="astronaut astronaut-2"></div>
+      <div class="astronaut astronaut-3"></div>
+
+      <!-- Spaceships -->
+      <div class="spaceship spaceship-1"></div>
+      <div class="spaceship spaceship-2"></div>
+      <div class="spaceship spaceship-3"></div>
+      <div class="spaceship spaceship-4"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="app-container">
+      <!-- Cockpit HUD Bar -->
+      <div class="hud-bar">
+        <div class="hud-left">
+          <span class="hud-ind status">AI</span>
+          <span class="hud-ind cam">CAM</span>
+          <span class="hud-ind net">NET</span>
+        </div>
+        <div class="hud-center">BLEENKZ COCKPIT</div>
+        <div class="hud-right">
+          <span class="hud-meter"><span class="hud-meter-fill" id="hudBattery"></span></span>
+          <span class="hud-time" id="hudTime">00:00</span>
+        </div>
+      </div>
+      <!-- Header Section -->
+      <header class="app-header">
+        <div class="logo-section">
+          <div class="logo-container">
+            <div class="logo-wrapper">
+              <img src="img/bleenkz-white.png" alt="Bleenkz Logo" class="app-logo" />
+              <span class="title-subtitle">Blink to Earn</span>
+            </div>
+          </div>
+          <div class="status-indicator">
+            <div class="status-dot" id="statusDot"></div>
+            <span class="status-text" id="statusText">Initializing...</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard -->
+      <main class="dashboard">
+        <!-- Blink Counter Card -->
+        <div class="counter-card">
+          <div class="card-header">
+            <h2 class="card-title">Blink Counter</h2>
+            <div class="card-icon">👁️</div>
+          </div>
+          <div class="counter-display">
+            <div class="counter-number" id="blinkCounter">0</div>
+            <div class="counter-label">Total Blinks</div>
+          </div>
+          <div class="counter-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="blinksPerSecond">0.0</span>
+              <span class="stat-label">blinks/sec</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="sessionTime">00:00</span>
+              <span class="stat-label">session time</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Speedometer Card -->
+        <div class="speedometer-card">
+          <div class="card-header">
+            <h2 class="card-title">Blink Rate</h2>
+            <div class="card-icon">⚡</div>
+          </div>
+          <div class="speedometer-container">
+            <canvas id="speedometer" width="200" height="200"></canvas>
+            <div class="speedometer-center">
+              <div class="speed-value" id="speedValue">0.0</div>
+              <div class="speed-unit">blinks/sec</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Status Card -->
+        <div class="ai-card">
+          <div class="card-header">
+            <h2 class="card-title">AI Vision</h2>
+            <div class="card-icon">🤖</div>
+          </div>
+          <div class="ai-status">
+            <div class="ai-indicator">
+              <div class="ai-pulse" id="aiPulse"></div>
+              <span class="ai-text" id="aiText">Processing...</span>
+            </div>
+            <div class="ai-metrics">
+              <div class="metric">
+                <span class="metric-label">Detection</span>
+                <div class="metric-bar">
+                  <div class="metric-fill" id="detectionBar"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Confidence</span>
+                <div class="metric-bar">
+                  <div class="metric-fill" id="confidenceBar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Crypto Token Card -->
+        <div class="crypto-card">
+          <div class="card-header">
+            <h2 class="card-title">$BLNKZ Token</h2>
+            <div class="card-icon">₿</div>
+          </div>
+          <div class="crypto-subtitle">Turn your blinks into digital gold! 💰</div>
+          <div class="crypto-content">
+            <div class="token-info">
+              <div class="token-amount">
+                <span class="token-symbol">$BLNKZ</span>
+                <span class="token-value" id="tokenAmount">0.00</span>
+              </div>
+              <div class="token-usd-value" id="tokenUsdValue">$0.00</div>
+            </div>
+            <div class="bitcoin-price">
+              <div class="price-label">Bitcoin Price</div>
+              <div class="price-display">
+                <span class="price-value" id="bitcoinPrice">$0.00</span>
+                <span class="price-change" id="priceChange">
+                  <span class="change-arrow" id="changeArrow">→</span>
+                  <span class="change-value" id="changeValue">0.00%</span>
+                </span>
+              </div>
+            </div>
+            <div class="crypto-stats">
+              <div class="stat-item">
+                <span class="stat-label">Growth Rate</span>
+                <span class="stat-value">+0.00001 per blink</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Last Update</span>
+                <span class="stat-value" id="lastUpdate">--:--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements Card -->
+        <div class="achievements-card">
+          <div class="card-header">
+            <h2 class="card-title">Achievements</h2>
+            <div class="card-icon">🏆</div>
+          </div>
+          <div class="achievements-list" id="achievementsList">
+            <div class="achievement-item locked" data-milestone="50">
+              <div class="achievement-icon">🚀</div>
+              <div class="achievement-info">
+                <div class="achievement-title">First Flight</div>
+                <div class="achievement-desc">50 blinks</div>
+              </div>
+            </div>
+            <div class="achievement-item locked" data-milestone="100">
+              <div class="achievement-icon">🌌</div>
+              <div class="achievement-info">
+                <div class="achievement-title">Orbit Breaker</div>
+                <div class="achievement-desc">100 blinks</div>
+              </div>
+            </div>
+            <div class="achievement-item locked" data-milestone="200">
+              <div class="achievement-icon">⭐</div>
+              <div class="achievement-info">
+                <div class="achievement-title">Star Seeker</div>
+                <div class="achievement-desc">200 blinks</div>
+              </div>
+            </div>
+            <div class="achievement-item locked" data-milestone="500">
+              <div class="achievement-icon">🌠</div>
+              <div class="achievement-info">
+                <div class="achievement-title">Galaxy Rider</div>
+                <div class="achievement-desc">500 blinks</div>
+              </div>
+            </div>
+            <div class="achievement-item locked" data-milestone="1000">
+              <div class="achievement-icon">👑</div>
+              <div class="achievement-info">
+                <div class="achievement-title">Master of the Cosmos</div>
+                <div class="achievement-desc">1000 blinks</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Control Panel -->
+      <div class="control-panel">
+        <button class="control-btn primary" id="testBlink">
+          <span class="btn-icon">👁️</span>
+          <span class="btn-text">Test Blink</span>
+        </button>
+        <button class="control-btn secondary" id="testFaceDetection">
+          <span class="btn-icon">🔍</span>
+          <span class="btn-text">Test Detection</span>
+        </button>
+        <button class="control-btn secondary" id="resetCounter">
+          <span class="btn-icon">🔄</span>
+          <span class="btn-text">Reset</span>
+        </button>
+      </div>
+
+      <!-- Achievement Effects -->
+      <div class="achievement-flash" id="achievementFlash"></div>
+      <div class="explosion-container" id="explosionContainer"></div>
+      <div class="confetti-container" id="confettiContainer"></div>
+
+      <!-- Achievement Notification -->
+      <div class="achievement-backdrop" id="achievementBackdrop"></div>
+      <div class="achievement-notification" id="achievementNotification">
+        <div class="notification-content">
+          <div class="notification-icon" id="notificationIcon">🏆</div>
+          <div class="notification-text">
+            <div class="notification-title" id="notificationTitle">Achievement Unlocked!</div>
+            <div class="notification-desc" id="notificationDesc">You've reached a new milestone!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Funny Blink Messages -->
+      <div class="funny-message" id="funnyMessage">
+        <div class="message-content">
+          <div class="message-icon" id="messageIcon">😄</div>
+          <div class="message-text" id="messageText">Keep blinking, space cadet!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Element with Face Guide -->
+    <div class="video-container">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="face-guide">
+        <div class="guide-frame">
+          <div class="guide-corners">
+            <div class="corner top-left"></div>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+            <div class="corner bottom-right"></div>
+          </div>
+          <div class="guide-text">Position your face here</div>
+        </div>
+      </div>
+    </div>
+    <canvas id="canvas" style="display: none"></canvas>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <script src="ui.js"></script>
+  </body>
+</html>
