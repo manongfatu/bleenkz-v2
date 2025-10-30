@@ -6,8 +6,8 @@ class BlinkCounter {
     this.lastBlinkTime = 0;
     this.blinkTimes = [];
     this.isBlinking = false;
-    this.eyeClosedThreshold = 0.15;
-    this.eyeOpenThreshold = 0.25;
+    this.eyeClosedThreshold = 0.2;
+    this.eyeOpenThreshold = 0.28;
     this.baselineEAR = 0.3; // Baseline eye aspect ratio when eyes are open
     this.earHistory = []; // Store recent EAR values for dynamic adjustment
     this.faceMesh = null;
@@ -193,22 +193,28 @@ class BlinkCounter {
       }
 
       // Calculate dynamic thresholds based on recent EAR values
-      if (this.earHistory.length >= 10) {
+      if (this.earHistory.length >= 8) {
         const sortedEAR = [...this.earHistory].sort((a, b) => a - b);
-        const medianEAR = sortedEAR[Math.floor(sortedEAR.length / 2)];
-        this.baselineEAR = medianEAR;
+        // Use 75th percentile as open-eye baseline for better sensitivity
+        const p75Index = Math.floor(sortedEAR.length * 0.75);
+        const p75EAR = sortedEAR[Math.min(p75Index, sortedEAR.length - 1)];
+        this.baselineEAR = p75EAR;
 
-        // Dynamic thresholds: 60% of baseline for closed, 80% for open (less sensitive)
-        this.eyeClosedThreshold = this.baselineEAR * 0.6;
-        this.eyeOpenThreshold = this.baselineEAR * 0.8;
+        // More sensitive dynamic thresholds with clear hysteresis
+        this.eyeClosedThreshold = this.baselineEAR * 0.72;
+        this.eyeOpenThreshold = this.baselineEAR * 0.88;
       }
 
-      // Detect blink with dynamic thresholds
-      if (avgEAR < this.eyeClosedThreshold && !this.isBlinking) {
+      // Apply slight smoothing to reduce noise
+      const recentWindow = Math.min(3, this.earHistory.length);
+      const smoothedEAR = recentWindow > 0 ? this.earHistory.slice(-recentWindow).reduce((a, b) => a + b, 0) / recentWindow : avgEAR;
+
+      // Detect blink with dynamic thresholds (using smoothed EAR)
+      if (smoothedEAR < this.eyeClosedThreshold && !this.isBlinking) {
         this.isBlinking = true;
         this.registerBlink();
-        console.log("BLINK DETECTED! EAR:", avgEAR.toFixed(3), "Threshold:", this.eyeClosedThreshold.toFixed(3));
-      } else if (avgEAR > this.eyeOpenThreshold && this.isBlinking) {
+        console.log("BLINK DETECTED! EAR:", smoothedEAR.toFixed(3), "Threshold:", this.eyeClosedThreshold.toFixed(3));
+      } else if (smoothedEAR > this.eyeOpenThreshold && this.isBlinking) {
         this.isBlinking = false;
         console.log("Eyes opened again");
       }

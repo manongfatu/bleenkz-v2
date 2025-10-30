@@ -35,6 +35,41 @@ Open the app:
 
 - http://localhost:3000
 
+## Deploy to Vercel
+
+This repo is configured for Vercel static hosting with serverless functions.
+
+### Steps
+
+1. Install Vercel CLI (optional):
+
+```bash
+npm i -g vercel
+```
+
+2. Deploy:
+
+```bash
+vercel
+# or
+vercel --prod
+```
+
+### What’s deployed
+
+- Static assets: `index.html`, `style.css`, `script.js`, `ui.js`, `img/**`, `favicon.svg`
+- Serverless functions: `/api/health`, `/api/ollama`
+  - `/api/ollama` requires an external Ollama endpoint via `OLLAMA_URL` env var.
+  - If `OLLAMA_URL` is not set, it returns HTTP 501 so the app safely falls back.
+
+### Environment variables (optional)
+
+- `OLLAMA_URL` – Base URL of a reachable Ollama instance (e.g. `https://your-ollama-host`).
+
+### Notes on browser camera permissions
+
+Vercel serves the app over HTTPS, which is required by browsers for `getUserMedia` camera access. Grant permission when prompted.
+
 ## What you’ll see
 
 - Animated space background with a minimalist cockpit HUD (AI/CAM/NET, battery, time)
