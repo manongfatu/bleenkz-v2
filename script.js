@@ -6,8 +6,8 @@ class BlinkCounter {
     this.lastBlinkTime = 0;
     this.blinkTimes = [];
     this.isBlinking = false;
-    this.eyeClosedThreshold = 0.26;
-    this.eyeOpenThreshold = 0.29;
+    this.eyeClosedThreshold = 0.28;
+    this.eyeOpenThreshold = 0.31;
     this.baselineEAR = 0.3; // Baseline eye aspect ratio when eyes are open
     this.earHistory = []; // Store recent EAR values for dynamic adjustment
     this.faceMesh = null;
@@ -136,8 +136,8 @@ class BlinkCounter {
       this.faceMesh.setOptions({
         maxNumFaces: 1,
         refineLandmarks: true,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5,
+        minDetectionConfidence: 0.4,
+        minTrackingConfidence: 0.4,
       });
 
       this.faceMesh.onResults((results) => {
@@ -195,20 +195,38 @@ class BlinkCounter {
       // Calculate dynamic thresholds based on recent EAR values
       if (this.earHistory.length >= 8) {
         const sortedEAR = [...this.earHistory].sort((a, b) => a - b);
-        // Use 75th percentile as open-eye baseline for better sensitivity
-        const p75Index = Math.floor(sortedEAR.length * 0.75);
-        const p75EAR = sortedEAR[Math.min(p75Index, sortedEAR.length - 1)];
-        this.baselineEAR = p75EAR;
+        // Use 80th percentile as open-eye baseline to bias toward open state
+        const p80Index = Math.floor(sortedEAR.length * 0.8);
+        const p80EAR = sortedEAR[Math.min(p80Index, sortedEAR.length - 1)];
+        this.baselineEAR = p80EAR;
 
-        // Increased sensitivity with clear hysteresis
-        // Higher closed threshold = easier to register a blink
-        // Slightly lower open threshold relative to baseline = quicker recovery
-        this.eyeClosedThreshold = this.baselineEAR * 0.85;
-        this.eyeOpenThreshold = this.baselineEAR * 0.89;
+        // Determine approximate face scale (normalized width across landmarks)
+        try {
+          const xs = landmarks.map((p) => p.x);
+          const minX = Math.min(...xs);
+          const maxX = Math.max(...xs);
+          this.lastFaceScale = Math.max(0.0001, maxX - minX);
+        } catch (e) {
+          this.lastFaceScale = null;
+        }
+
+        // Increased sensitivity with clear hysteresis; adjust for small faces (farther distance)
+        // Default dynamic thresholds
+        let dynamicClosed = this.baselineEAR * 0.92;
+        let dynamicOpen = this.baselineEAR * 0.95;
+
+        // If face appears small in frame, make detection even easier
+        if (this.lastFaceScale && this.lastFaceScale < 0.18) {
+          dynamicClosed = this.baselineEAR * 0.94;
+          dynamicOpen = this.baselineEAR * 0.97;
+        }
+
+        this.eyeClosedThreshold = dynamicClosed;
+        this.eyeOpenThreshold = dynamicOpen;
       }
 
       // Apply slight smoothing to reduce noise
-      const recentWindow = Math.min(2, this.earHistory.length);
+      const recentWindow = Math.min(1, this.earHistory.length);
       const smoothedEAR = recentWindow > 0 ? this.earHistory.slice(-recentWindow).reduce((a, b) => a + b, 0) / recentWindow : avgEAR;
 
       // Detect blink with dynamic thresholds (using smoothed EAR)
