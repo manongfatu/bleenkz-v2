@@ -43,7 +43,18 @@
 
     container.appendChild(dot);
     container.appendChild(text);
-    document.body.appendChild(container);
+    // Prefer mounting under the camera (below it) via the dedicated mount
+    const mount = document.getElementById("humanStatusMount");
+    if (mount) {
+      mount.appendChild(container);
+    } else {
+      const cameraContainer = document.querySelector(".video-container");
+      if (cameraContainer) {
+        cameraContainer.appendChild(container);
+      } else {
+        document.body.appendChild(container);
+      }
+    }
     return container;
   }
 

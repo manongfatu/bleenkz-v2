@@ -61,7 +61,3 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`[Bleenkz] Server running on http://localhost:${PORT}`);
 });
-
-
-
-

@@ -1151,6 +1151,29 @@ p {
   font-size: 1.2rem;
 }
 
+/* HUD Home icon (center) */
+.hud-home-icon {
+  display: inline-flex; /* icon visible on all sizes */
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid var(--border-color);
+  background: var(--bg-glass);
+  border-radius: 8px;
+  padding: 6px;
+  line-height: 0;
+}
+
+.hud-home-icon:hover {
+  border-color: var(--border-glow);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hud-center-title {
+  display: inline; /* toggled off on desktop */
+}
+
 /* Achievement Backdrop */
 .achievement-backdrop {
   position: fixed;
@@ -1481,6 +1504,8 @@ p {
     gap: 1.5rem;
   }
 
+  /* (reverted) keep HUD layout unchanged on tablets */
+
   .crypto-card,
   .counter-card,
   .speedometer-card,
@@ -1504,9 +1529,12 @@ p {
   .video-container {
     width: 200px;
     height: 150px;
-    top: 1rem !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0.75rem auto 0;
+    z-index: auto !important;
   }
 
   .guide-frame {
@@ -1543,6 +1571,17 @@ p {
   .message-icon {
     font-size: 1.25rem;
   }
+
+  /* Human status as a card below the camera on mobile */
+  .human-status {
+    position: static;
+    margin: 0.75rem auto 0;
+    right: auto;
+    top: auto;
+    left: auto;
+    transform: none;
+    display: inline-flex;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1559,9 +1598,12 @@ p {
   .video-container {
     width: 180px;
     height: 135px;
-    top: 1rem !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0.75rem auto 0;
+    z-index: auto !important;
   }
 
   .guide-frame {
@@ -1572,6 +1614,27 @@ p {
   .guide-text {
     font-size: 10px;
     bottom: -25px;
+  }
+
+  /* Compact HUD spacing on small phones */
+  .hud-bar {
+    padding: 0.5rem;
+  }
+  .hud-time {
+    font-size: 0.75rem;
+  }
+}
+
+/* Hide the right-side Home text button on all sizes */
+.hud-right .control-btn[aria-label="Home"] {
+  display: none;
+}
+
+/* Desktop-only HUD adjustments */
+@media (min-width: 769px) {
+  /* Hide center title on desktop so the icon sits centered */
+  .hud-center-title {
+    display: none;
   }
 }
 
@@ -1664,9 +1727,7 @@ p {
 
 /* Human Status (top-right indicator) */
 .human-status {
-  position: fixed;
-  top: 12px;
-  right: 12px;
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;

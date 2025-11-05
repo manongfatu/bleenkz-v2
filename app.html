@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bleenkz - Cockpit | Behavioral Proof of Humanity</title>
+    <title>Bleenkz — Cockpit | Behavioral Proof of Humanity</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,18 +50,19 @@
           <span class="hud-ind status">AI</span>
           <span class="hud-ind cam">CAM</span>
           <span class="hud-ind net">NET</span>
-          <span class="hud-ind human" id="hudHuman">HUM</span>
         </div>
         <div class="hud-center">
-          <a href="/" class="control-btn secondary" style="padding: 0.5rem 1rem; text-decoration: none" aria-label="Home" title="Home">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z" />
+          <a href="/" class="hud-home-icon" aria-label="Home" title="Home">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </a>
+          <span class="hud-center-title"></span>
         </div>
         <div class="hud-right">
           <span class="hud-meter"><span class="hud-meter-fill" id="hudBattery"></span></span>
           <span class="hud-time" id="hudTime">00:00</span>
+          <a href="/" class="control-btn secondary" style="padding: 0.5rem 1rem; text-decoration: none" aria-label="Home" title="Home">Home</a>
         </div>
       </div>
       <!-- Header Section -->
@@ -71,6 +72,12 @@
             <div class="logo-wrapper">
               <img src="img/bleenkz-white.png" alt="Bleenkz Logo" class="app-logo" />
               <span class="title-subtitle">Behavioral Proof of Humanity • Blink to Earn</span>
+              <!-- Camera on mobile: placed directly under subtitle; remains fixed via CSS on desktop -->
+              <div class="video-container">
+                <video id="video" autoplay muted playsinline></video>
+              </div>
+              <!-- Human status mount (for mobile, centered under camera) -->
+              <div id="humanStatusMount"></div>
             </div>
           </div>
           <div class="status-indicator">
@@ -120,7 +127,7 @@
         <!-- AI Status Card -->
         <div class="ai-card">
           <div class="card-header center">
-            <h2 class="card-title">AI Vision - On‑device</h2>
+            <h2 class="card-title">AI Vision — On‑device</h2>
           </div>
           <div class="ai-status">
             <div class="ai-indicator">
@@ -150,7 +157,7 @@
             <h2 class="card-title">$BLNKZ Token</h2>
             <div class="card-icon">₿</div>
           </div>
-          <div class="crypto-subtitle">🪙 Earn $BLNKZ as you prove you're human - rewards accrue per blink.</div>
+          <div class="crypto-subtitle">🪙 Earn $BLNKZ as you prove you're human — rewards accrue per blink.</div>
           <div class="crypto-content">
             <div class="token-info">
               <div class="token-amount">
@@ -254,21 +261,7 @@
       </div>
     </div>
 
-    <!-- Video Element with Face Guide -->
-    <div class="video-container">
-      <video id="video" autoplay muted playsinline></video>
-      <div class="face-guide">
-        <div class="guide-frame">
-          <div class="guide-corners">
-            <div class="corner top-left"></div>
-            <div class="corner top-right"></div>
-            <div class="corner bottom-left"></div>
-            <div class="corner bottom-right"></div>
-          </div>
-          <div class="guide-text">Position your face here</div>
-        </div>
-      </div>
-    </div>
+    <!-- Video Element with Face Guide moved into header for mobile layout -->
     <canvas id="canvas" style="display: none"></canvas>
 
     <!-- Scripts -->

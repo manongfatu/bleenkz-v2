@@ -9,11 +9,5 @@
     { "src": "favicon.svg", "use": "@vercel/static" },
     { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/app", "dest": "/app.html" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  "routes": [{ "src": "/api/(.*)", "dest": "/api/$1" }, { "src": "/app", "dest": "/app.html" }, { "handle": "filesystem" }, { "src": "/(.*)", "dest": "/index.html" }]
 }
-

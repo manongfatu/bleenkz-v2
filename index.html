@@ -93,6 +93,22 @@
         justify-content: space-between;
         padding: 14px 0;
       }
+      .nav-toggle {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: #fff;
+        color: var(--text-primary);
+        cursor: pointer;
+      }
+      .nav-toggle svg {
+        width: 20px;
+        height: 20px;
+      }
       .brand {
         display: flex;
         align-items: center;
@@ -577,6 +593,11 @@
       }
 
       @media (max-width: 960px) {
+        .nav-actions > a {
+          width: 100%;
+          text-align: center !important;
+          justify-content: center;
+        }
         .hero-grid {
           grid-template-columns: 1fr;
         }
@@ -591,9 +612,50 @@
         }
         .nav-inner {
           padding: 10px 0;
+          flex-wrap: wrap;
         }
         .section {
           padding: 36px 0;
+        }
+        .nav-toggle {
+          display: inline-flex;
+        }
+        .nav-menu,
+        .nav-actions {
+          display: none;
+        }
+        .nav.open .nav-menu,
+        .nav.open .nav-actions {
+          display: flex;
+          width: 100%;
+        }
+        .nav.open .nav-menu {
+          order: 3;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+          margin: 8px 0 0 0;
+        }
+        .nav.open .nav-menu a {
+          padding: 10px 12px;
+          background: #fff;
+          border: 1px solid var(--border-color);
+        }
+        .nav.open .nav-actions {
+          order: 2;
+          justify-content: flex-end;
+          gap: 8px;
+          margin-top: 10px;
+        }
+        .mini {
+          grid-template-columns: 1fr;
+        }
+        .hero-card {
+          max-width: 560px;
+          margin: 0 auto;
+        }
+        .mini.hero-aside {
+          gap: 10px;
         }
       }
       @media (max-width: 600px) {
@@ -601,10 +663,11 @@
           width: 120px;
         }
         .h1 {
-          font-size: clamp(28px, 7vw, 44px);
+          font-size: 46px !important;
+          letter-spacing: -0.02rem !important;
         }
         h2 {
-          font-size: clamp(18px, 5vw, 24px);
+          font-size: 30px !important;
         }
         h3 {
           font-size: clamp(16px, 4.2vw, 20px);
@@ -616,6 +679,17 @@
         .section::before {
           opacity: 0.6;
         }
+        .container {
+          padding: 16px;
+        }
+        .nav-menu {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px;
+        }
+        .mini.hero-aside .pill {
+          padding: 12px 12px;
+        }
       }
     </style>
   </head>
@@ -626,7 +700,7 @@
       <div class="stars2"></div>
       <div class="nebula"></div>
     </div>
-    <nav class="nav">
+    <nav class="nav" id="siteNav">
       <div class="container nav-inner">
         <a class="brand" href="/">
           <picture>
@@ -634,6 +708,9 @@
             <img src="img/bleenkz-white.png" alt="Bleenkz" />
           </picture>
         </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" /></svg>
+        </button>
         <div class="nav-menu">
           <a href="#why">Why</a>
           <a href="#what">What</a>
@@ -863,6 +940,16 @@
       </div>
       <script>
         document.getElementById("y").textContent = new Date().getFullYear();
+        (function () {
+          var nav = document.getElementById("siteNav");
+          var btn = document.getElementById("navToggle");
+          if (btn && nav) {
+            btn.addEventListener("click", function () {
+              var open = nav.classList.toggle("open");
+              btn.setAttribute("aria-expanded", open ? "true" : "false");
+            });
+          }
+        })();
       </script>
     </footer>
   </body>
