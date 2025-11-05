@@ -293,26 +293,32 @@ class BlinkCounter {
 
   setupControls() {
     const testButton = document.getElementById("testBlink");
-    testButton.addEventListener("click", () => {
-      this.registerBlink();
-      console.log("Manual blink registered!");
-    });
+    if (testButton) {
+      testButton.addEventListener("click", () => {
+        this.registerBlink();
+        console.log("Manual blink registered!");
+      });
+    }
 
     const testFaceButton = document.getElementById("testFaceDetection");
-    testFaceButton.addEventListener("click", () => {
-      if (this.faceMesh && this.video) {
-        console.log("MediaPipe FaceMesh is ready");
-        console.log("Video element:", this.video);
-        console.log("Video ready state:", this.video.readyState);
-      } else {
-        console.log("MediaPipe or video not ready");
-      }
-    });
+    if (testFaceButton) {
+      testFaceButton.addEventListener("click", () => {
+        if (this.faceMesh && this.video) {
+          console.log("MediaPipe FaceMesh is ready");
+          console.log("Video element:", this.video);
+          console.log("Video ready state:", this.video.readyState);
+        } else {
+          console.log("MediaPipe or video not ready");
+        }
+      });
+    }
 
     const resetButton = document.getElementById("resetCounter");
-    resetButton.addEventListener("click", () => {
-      this.resetCounter();
-    });
+    if (resetButton) {
+      resetButton.addEventListener("click", () => {
+        this.resetCounter();
+      });
+    }
 
     // Simulate NET status and battery meter slow drift for HUD
     try {

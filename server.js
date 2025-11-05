@@ -48,6 +48,11 @@ app.post("/api/ollama", async (req, res) => {
   }
 });
 
+// Serve the app cockpit at /app
+app.get("/app", (req, res) => {
+  res.sendFile(path.join(__dirname, "app.html"));
+});
+
 // Fallback to index.html for direct file opens
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));

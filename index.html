@@ -3,292 +3,867 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bleenkz - Space Blink Counter</title>
+    <title>Bleenkz - Behavioral Proof of Humanity</title>
+    <meta name="description" content="Bleenkz is a behavioral Proof of Humanity layer. Blink to earn, privacy-first, on-device detection." />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        /* Accessible, friendly light palette */
+        --primary-color: #6e59cf; /* brand violet */
+        --secondary-color: #475569; /* slate-600 */
+        --accent-color: #7a6ee6; /* softer violet */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f6f8fb; /* subtle section contrast */
+        --text-primary: #0f172a; /* slate-900 */
+        --text-secondary: #475569; /* slate-600 */
+        --border-color: rgba(2, 6, 23, 0.12);
+        --radius: 14px;
+        --shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
+        --header-bg: rgba(255, 255, 255, 0.86);
+        --footer-bg: #f8fafc;
+        /* Glass + spacing */
+        --glass-bg: rgba(255, 255, 255, 0.85);
+        --glass-border: rgba(15, 23, 42, 0.1);
+        --glass-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+        --glass-blur: 10px;
+        --gap-sm: 12px;
+        --gap: 24px;
+        --section-y: 72px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: "Manrope", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+      }
+      p {
+        line-height: 1.8em;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Alexandria", ui-sans-serif, system-ui;
+        letter-spacing: -0.04rem !important;
+      }
+      .h1 {
+        font-family: "Alexandria", ui-sans-serif, system-ui;
+        letter-spacing: -4px !important;
+        color: #444 !important;
+      }
+      h1,
+      h2,
+      h3,
+      .h1,
+      .section-title {
+        color: var(--primary-color);
+      }
+
+      h3 {
+        color: #444444 !important;
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: saturate(140%) blur(10px);
+        background: var(--header-bg);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: inherit;
+      }
+      .brand img {
+        width: 150px;
+        height: auto;
+        display: block;
+        object-fit: contain;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-sm);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        transition: all 0.2s ease;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(139, 92, 246, 0.5);
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.18);
+      }
+      .btn.primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: #ffffff;
+        border-color: transparent;
+      }
+      .btn.ghost {
+        background: transparent;
+      }
+      /* Nav menu */
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 0 10px;
+      }
+      .nav-menu a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 6px 8px;
+        border-radius: 8px;
+      }
+      .nav-menu a:hover {
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .hero {
+        padding: 96px 0 56px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: var(--gap);
+        align-items: center;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        color: var(--text-secondary);
+        background: #fff;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      .h1 {
+        font-size: clamp(32px, 6vw, 56px);
+        line-height: 1.05;
+        margin: 14px 0 10px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+      .h1 strong {
+        color: var(--primary-color);
+      }
+      .lead {
+        font-size: clamp(16px, 2.8vw, 20px);
+        color: var(--text-secondary);
+        margin-bottom: 22px;
+      }
+      .cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--gap-sm);
+      }
+      .hero-card {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 18px;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(2, 6, 23, 0.06);
+      }
+      .mini {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        gap: var(--gap);
+        margin-top: 16px;
+      }
+      .mini.hero-aside {
+        grid-template-columns: 1fr;
+        gap: var(--gap-sm);
+        margin-top: 12px;
+      }
+      .mini.hero-aside .pill {
+        justify-content: flex-start;
+        text-align: left;
+        padding: 14px 14px;
+      }
+      .mini .pill {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 16px 14px;
+        min-height: 64px;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(2, 6, 23, 0.05);
+      }
+
+      .section {
+        padding: var(--section-y) 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--gap);
+      }
+      .card {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(2, 6, 23, 0.05);
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(139, 92, 246, 0.45);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--text-secondary);
+        line-height: 1.8em;
+      }
+      .section-head {
+        text-align: center;
+        margin-bottom: var(--gap);
+      }
+      .section-title {
+        font-size: clamp(22px, 4vw, 28px);
+        margin: 0 0 6px;
+        font-weight: 500;
+        letter-spacing: -4px;
+      }
+      .section-subtitle {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 16px;
+      }
+      .list {
+        margin: 0;
+        padding: 0 0 0 18px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+      .muted {
+        color: var(--text-secondary);
+      }
+      h2 {
+        font-size: clamp(20px, 2.8vw, 28px);
+      }
+      h3 {
+        font-size: clamp(16px, 2.2vw, 20px);
+      }
+      .lead {
+        font-size: clamp(16px, 2.4vw, 20px);
+      }
+
+      /* Remove per-section overlays; single global background instead */
+      .section::before,
+      .section-why::before,
+      .section-how::before,
+      .section-what::before,
+      .section-usecases::before,
+      .section-token::before,
+      .section-roadmap::before,
+      .section-faq::before {
+        display: none !important;
+        content: none !important;
+      }
+
+      /* FAQ numbered accordion styles */
+      .section-faq .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        counter-reset: faq;
+      }
+      .section-faq details {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(2, 6, 23, 0.05);
+        padding: 16px;
+        width: 100%;
+      }
+      .section-faq details summary {
+        list-style: none;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-primary);
+        position: relative;
+        padding-right: 28px;
+      }
+      .section-faq details summary::-webkit-details-marker {
+        display: none;
+      }
+      .section-faq details summary::before {
+        counter-increment: faq;
+        content: counter(faq) ". ";
+        color: var(--primary-color);
+        margin-right: 8px;
+        font-weight: 700;
+      }
+      .section-faq details summary::after {
+        content: "▾";
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%) rotate(-90deg);
+        transition: transform 0.2s ease, color 0.2s ease;
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1;
+      }
+      .section-faq details p {
+        margin-top: 10px;
+      }
+      .section-faq details[open] {
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+      .section-faq details[open] summary::after {
+        transform: translateY(-50%) rotate(0deg);
+        color: var(--primary-color);
+      }
+
+      /* Hide empty cards (remove all blank cards) */
+      .card:empty {
+        display: none !important;
+      }
+
+      /* Standard padding for Why/What cards */
+      .section-why .card,
+      .section-what .card {
+        padding: 20px;
+      }
+
+      /* Spacey global background */
+      .space-bg {
+        display: none;
+      }
+      /* Relaxing moving violet gradient background */
+      .bg-gradient {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(40% 40% at 15% 20%, rgba(110, 89, 207, 0.14), transparent 60%), radial-gradient(45% 45% at 85% 80%, rgba(122, 110, 230, 0.12), transparent 60%), linear-gradient(180deg, #ffffff, var(--bg-secondary));
+        animation: bgMove 18s ease-in-out infinite alternate;
+      }
+      @keyframes bgMove {
+        0% {
+          background-position: 0% 0%, 100% 100%, 0% 0%;
+        }
+        50% {
+          background-position: 12% 8%, 88% 92%, 0% 0%;
+        }
+        100% {
+          background-position: 6% 12%, 94% 86%, 0% 0%;
+        }
+      }
+      .space-bg .stars,
+      .space-bg .stars2 {
+        position: absolute;
+        inset: 0;
+        background-repeat: repeat;
+        animation: sparkle 12s linear infinite;
+        opacity: 0.25;
+      }
+      .space-bg .stars {
+        background-image: radial-gradient(2px 2px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.7), transparent);
+        background-size: 200px 100px;
+      }
+      .space-bg .stars2 {
+        background-image: radial-gradient(1px 1px at 50px 50px, #fff, transparent), radial-gradient(1px 1px at 150px 25px, rgba(255, 255, 255, 0.6), transparent);
+        background-size: 250px 125px;
+        animation-duration: 18s;
+        opacity: 0.18;
+      }
+      .space-bg .nebula {
+        position: absolute;
+        inset: -20% -10% -10% -20%;
+        background: radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.12), transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.1), transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(148, 163, 184, 0.06), transparent 55%);
+        filter: blur(8px);
+      }
+      @keyframes sparkle {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Ensure buttons never show underlines */
+      .btn,
+      .btn:visited,
+      .btn:hover,
+      .btn:focus {
+        text-decoration: none;
+      }
+      .btn:focus-visible {
+        outline: 3px solid rgba(110, 89, 207, 0.45);
+        outline-offset: 2px;
+      }
+
+      /* Remove alternating section overlay */
+
+      /* Split layout */
+      .split-inner {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: var(--gap);
+        align-items: center;
+      }
+      .split-inner.one-col {
+        grid-template-columns: 1fr;
+      }
+      .split-col.image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .planet-card {
+        display: none;
+      }
+
+      /* Staggered cards */
+      .stagger > .card {
+        transform: translateY(12px);
+        opacity: 0;
+        animation: rise 0.6s ease forwards;
+      }
+      .stagger > .card:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .stagger > .card:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .stagger > .card:nth-child(3) {
+        animation-delay: 0.25s;
+      }
+      @keyframes rise {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Timeline style */
+      .timeline {
+        position: relative;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: rgba(148, 163, 184, 0.25);
+      }
+      .timeline .card {
+        position: relative;
+        padding-left: 28px;
+      }
+      .timeline .card::before {
+        content: "";
+        position: absolute;
+        left: 13px;
+        top: 26px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+      }
+
+      /* Steps style */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--gap);
+      }
+      .steps .card {
+        display: flex;
+        gap: var(--gap-sm);
+        align-items: flex-start;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: rgba(139, 92, 246, 0.15);
+        color: #fff;
+        font-weight: 700;
+        border: 1px solid var(--border-color);
+      }
+
+      /* Fun tilt */
+      .tilt:hover {
+        transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(-2px);
+      }
+      .list {
+        margin: 0;
+        padding: 0 0 0 18px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+      .muted {
+        color: var(--text-secondary);
+      }
+
+      .foot {
+        padding: 26px 0 40px;
+        color: var(--text-secondary);
+        border-top: 1px solid var(--border-color);
+        margin-top: 40px;
+        background: var(--footer-bg);
+      }
+      .foot a {
+        color: var(--text-secondary);
+      }
+
+      @media (max-width: 960px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .split-inner {
+          grid-template-columns: 1fr;
+        }
+        .planet-card {
+          max-width: 100%;
+        }
+        .nav-inner {
+          padding: 10px 0;
+        }
+        .section {
+          padding: 36px 0;
+        }
+      }
+      @media (max-width: 600px) {
+        .brand img {
+          width: 120px;
+        }
+        .h1 {
+          font-size: clamp(28px, 7vw, 44px);
+        }
+        h2 {
+          font-size: clamp(18px, 5vw, 24px);
+        }
+        h3 {
+          font-size: clamp(16px, 4.2vw, 20px);
+        }
+        .cta {
+          gap: 10px;
+        }
+        /* Tone down section overlays on mobile */
+        .section::before {
+          opacity: 0.6;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Animated Galaxy Background -->
-    <div class="galaxy-background">
+    <div class="bg-gradient"></div>
+    <div class="space-bg">
       <div class="stars"></div>
       <div class="stars2"></div>
-      <div class="stars3"></div>
       <div class="nebula"></div>
-      <div class="cosmic-dust"></div>
-
-      <!-- Planets -->
-      <div class="planet planet-1"></div>
-      <div class="planet planet-2">
-        <div class="planet-ring"></div>
-      </div>
-      <div class="planet planet-3"></div>
-      <div class="planet planet-4">
-        <div class="planet-ring"></div>
-      </div>
-      <div class="planet planet-5"></div>
-
-      <!-- Astronauts -->
-      <div class="astronaut astronaut-1"></div>
-      <div class="astronaut astronaut-2"></div>
-      <div class="astronaut astronaut-3"></div>
-
-      <!-- Spaceships -->
-      <div class="spaceship spaceship-1"></div>
-      <div class="spaceship spaceship-2"></div>
-      <div class="spaceship spaceship-3"></div>
-      <div class="spaceship spaceship-4"></div>
     </div>
-
-    <!-- Main Content Container -->
-    <div class="app-container">
-      <!-- Cockpit HUD Bar -->
-      <div class="hud-bar">
-        <div class="hud-left">
-          <span class="hud-ind status">AI</span>
-          <span class="hud-ind cam">CAM</span>
-          <span class="hud-ind net">NET</span>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <picture>
+            <source srcset="img/bleenkz-logo.png" type="image/png" />
+            <img src="img/bleenkz-white.png" alt="Bleenkz" />
+          </picture>
+        </a>
+        <div class="nav-menu">
+          <a href="#why">Why</a>
+          <a href="#what">What</a>
+          <a href="#use-cases">Use Cases</a>
+          <a href="#token">Token</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#faq">FAQ</a>
         </div>
-        <div class="hud-center">BLEENKZ COCKPIT</div>
-        <div class="hud-right">
-          <span class="hud-meter"><span class="hud-meter-fill" id="hudBattery"></span></span>
-          <span class="hud-time" id="hudTime">00:00</span>
+        <div class="nav-actions">
+          <a class="btn ghost" href="/app">Open App</a>
+          <a class="btn" href="https://mercury-fenugreek-aa8.notion.site/Bleenkz-Behavioral-Proof-of-Humanity-Layer-27216a000624806cad7ed3af1f526346?pvs=74" target="_blank" rel="noreferrer">Docs</a>
         </div>
       </div>
-      <!-- Header Section -->
-      <header class="app-header">
-        <div class="logo-section">
-          <div class="logo-container">
-            <div class="logo-wrapper">
-              <img src="img/bleenkz-white.png" alt="Bleenkz Logo" class="app-logo" />
-              <span class="title-subtitle">Blink to Earn</span>
-            </div>
-          </div>
-          <div class="status-indicator">
-            <div class="status-dot" id="statusDot"></div>
-            <span class="status-text" id="statusText">Initializing...</span>
+    </nav>
+
+    <header class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="tag">🧠⚡ Behavioral Proof of Humanity</span>
+          <h1 class="h1">Blink to earn with <strong>Bleenkz</strong></h1>
+          <p class="lead">Bleenkz turns quick blinks into simple proof that a real person is here. It runs in your browser, on your device - no photos saved, no identity needed.</p>
+          <div class="cta">
+            <a class="btn primary" href="/app">Launch App</a>
+            <a class="btn" href="https://mercury-fenugreek-aa8.notion.site/Bleenkz-Behavioral-Proof-of-Humanity-Layer-27216a000624806cad7ed3af1f526346?pvs=74" target="_blank" rel="noreferrer">Read the Paper</a>
           </div>
         </div>
-      </header>
-
-      <!-- Main Dashboard -->
-      <main class="dashboard">
-        <!-- Blink Counter Card -->
-        <div class="counter-card">
-          <div class="card-header">
-            <h2 class="card-title">Blink Counter</h2>
-            <div class="card-icon">👁️</div>
+        <div class="hero-card">
+          <picture>
+            <source srcset="img/bleenkz-logo.png" type="image/png" />
+            <img src="img/bleenkz-white.png" alt="Bleenkz" style="width: 100%; max-width: 280px; display: block; margin: 6px auto 12px; filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.28))" />
+          </picture>
+          <p style="text-align: center; color: var(--text-secondary); margin: 0 0 10px">A minimalist cockpit experience awaits.</p>
+          <div style="display: flex; gap: var(--gap-sm); justify-content: center">
+            <a class="btn primary" href="/app">Start blinking</a>
+            <a class="btn" href="/app">View dashboard</a>
           </div>
-          <div class="counter-display">
-            <div class="counter-number" id="blinkCounter">0</div>
-            <div class="counter-label">Total Blinks</div>
-          </div>
-          <div class="counter-stats">
-            <div class="stat-item">
-              <span class="stat-value" id="blinksPerSecond">0.0</span>
-              <span class="stat-label">blinks/sec</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-value" id="sessionTime">00:00</span>
-              <span class="stat-label">session time</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Speedometer Card -->
-        <div class="speedometer-card">
-          <div class="card-header">
-            <h2 class="card-title">Blink Rate</h2>
-            <div class="card-icon">⚡</div>
-          </div>
-          <div class="speedometer-container">
-            <canvas id="speedometer" width="200" height="200"></canvas>
-            <div class="speedometer-center">
-              <div class="speed-value" id="speedValue">0.0</div>
-              <div class="speed-unit">blinks/sec</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- AI Status Card -->
-        <div class="ai-card">
-          <div class="card-header">
-            <h2 class="card-title">AI Vision</h2>
-            <div class="card-icon">🤖</div>
-          </div>
-          <div class="ai-status">
-            <div class="ai-indicator">
-              <div class="ai-pulse" id="aiPulse"></div>
-              <span class="ai-text" id="aiText">Processing...</span>
-            </div>
-            <div class="ai-metrics">
-              <div class="metric">
-                <span class="metric-label">Detection</span>
-                <div class="metric-bar">
-                  <div class="metric-fill" id="detectionBar"></div>
-                </div>
-              </div>
-              <div class="metric">
-                <span class="metric-label">Confidence</span>
-                <div class="metric-bar">
-                  <div class="metric-fill" id="confidenceBar"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Crypto Token Card -->
-        <div class="crypto-card">
-          <div class="card-header">
-            <h2 class="card-title">$BLNKZ Token</h2>
-            <div class="card-icon">₿</div>
-          </div>
-          <div class="crypto-subtitle">Turn your blinks into digital gold! 💰</div>
-          <div class="crypto-content">
-            <div class="token-info">
-              <div class="token-amount">
-                <span class="token-symbol">$BLNKZ</span>
-                <span class="token-value" id="tokenAmount">0.00</span>
-              </div>
-              <div class="token-usd-value" id="tokenUsdValue">$0.00</div>
-            </div>
-            <div class="bitcoin-price">
-              <div class="price-label">Bitcoin Price</div>
-              <div class="price-display">
-                <span class="price-value" id="bitcoinPrice">$0.00</span>
-                <span class="price-change" id="priceChange">
-                  <span class="change-arrow" id="changeArrow">→</span>
-                  <span class="change-value" id="changeValue">0.00%</span>
-                </span>
-              </div>
-            </div>
-            <div class="crypto-stats">
-              <div class="stat-item">
-                <span class="stat-label">Growth Rate</span>
-                <span class="stat-value">+0.00001 per blink</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Last Update</span>
-                <span class="stat-value" id="lastUpdate">--:--</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Achievements Card -->
-        <div class="achievements-card">
-          <div class="card-header">
-            <h2 class="card-title">Achievements</h2>
-            <div class="card-icon">🏆</div>
-          </div>
-          <div class="achievements-list" id="achievementsList">
-            <div class="achievement-item locked" data-milestone="50">
-              <div class="achievement-icon">🚀</div>
-              <div class="achievement-info">
-                <div class="achievement-title">First Flight</div>
-                <div class="achievement-desc">50 blinks</div>
-              </div>
-            </div>
-            <div class="achievement-item locked" data-milestone="100">
-              <div class="achievement-icon">🌌</div>
-              <div class="achievement-info">
-                <div class="achievement-title">Orbit Breaker</div>
-                <div class="achievement-desc">100 blinks</div>
-              </div>
-            </div>
-            <div class="achievement-item locked" data-milestone="200">
-              <div class="achievement-icon">⭐</div>
-              <div class="achievement-info">
-                <div class="achievement-title">Star Seeker</div>
-                <div class="achievement-desc">200 blinks</div>
-              </div>
-            </div>
-            <div class="achievement-item locked" data-milestone="500">
-              <div class="achievement-icon">🌠</div>
-              <div class="achievement-info">
-                <div class="achievement-title">Galaxy Rider</div>
-                <div class="achievement-desc">500 blinks</div>
-              </div>
-            </div>
-            <div class="achievement-item locked" data-milestone="1000">
-              <div class="achievement-icon">👑</div>
-              <div class="achievement-info">
-                <div class="achievement-title">Master of the Cosmos</div>
-                <div class="achievement-desc">1000 blinks</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <!-- Control Panel -->
-      <div class="control-panel">
-        <button class="control-btn primary" id="testBlink">
-          <span class="btn-icon">👁️</span>
-          <span class="btn-text">Test Blink</span>
-        </button>
-        <button class="control-btn secondary" id="testFaceDetection">
-          <span class="btn-icon">🔍</span>
-          <span class="btn-text">Test Detection</span>
-        </button>
-        <button class="control-btn secondary" id="resetCounter">
-          <span class="btn-icon">🔄</span>
-          <span class="btn-text">Reset</span>
-        </button>
-      </div>
-
-      <!-- Achievement Effects -->
-      <div class="achievement-flash" id="achievementFlash"></div>
-      <div class="explosion-container" id="explosionContainer"></div>
-      <div class="confetti-container" id="confettiContainer"></div>
-
-      <!-- Achievement Notification -->
-      <div class="achievement-backdrop" id="achievementBackdrop"></div>
-      <div class="achievement-notification" id="achievementNotification">
-        <div class="notification-content">
-          <div class="notification-icon" id="notificationIcon">🏆</div>
-          <div class="notification-text">
-            <div class="notification-title" id="notificationTitle">Achievement Unlocked!</div>
-            <div class="notification-desc" id="notificationDesc">You've reached a new milestone!</div>
+          <div class="mini hero-aside">
+            <div class="pill">📱 On-device detection</div>
+            <div class="pill">🔒 Privacy by design</div>
+            <div class="pill">🪙 $BLNKZ economy</div>
           </div>
         </div>
       </div>
+    </header>
 
-      <!-- Funny Blink Messages -->
-      <div class="funny-message" id="funnyMessage">
-        <div class="message-content">
-          <div class="message-icon" id="messageIcon">😄</div>
-          <div class="message-text" id="messageText">Keep blinking, space cadet!</div>
+    <section class="section section-why" id="why">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Why Bleenkz</h2>
+          <p class="section-subtitle">Why Bleenkz works for real people: it is private, simple, and runs quietly while you browse.</p>
         </div>
       </div>
-    </div>
+      <div class="container grid-3">
+        <div class="card">
+          <h3>🧑‍🚀 Human checks</h3>
+          <p>Your natural blinks show a real person is present - no sign ups or identity checks.</p>
+        </div>
+        <div class="card">
+          <h3>🔐 Private by default</h3>
+          <p>Everything runs in your browser. No photos sent anywhere. Nothing is saved.</p>
+        </div>
+        <div class="card">
+          <h3>🪙 Rewards</h3>
+          <p>Earn tiny, fair rewards for real presence that can power apps and communities.</p>
+        </div>
+      </div>
+    </section>
 
-    <!-- Video Element with Face Guide -->
-    <div class="video-container">
-      <video id="video" autoplay muted playsinline></video>
-      <div class="face-guide">
-        <div class="guide-frame">
-          <div class="guide-corners">
-            <div class="corner top-left"></div>
-            <div class="corner top-right"></div>
-            <div class="corner bottom-left"></div>
-            <div class="corner bottom-right"></div>
+    <section class="section section-how" id="how">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">How it Works</h2>
+          <p class="section-subtitle">Three simple steps - all on your device.</p>
+        </div>
+        <div class="grid-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gap)">
+          <div class="card">
+            <h3>👀 Detect a blink</h3>
+            <p>The camera looks for a basic blink shape - nothing else. This happens locally in your browser.</p>
           </div>
-          <div class="guide-text">Position your face here</div>
+          <div class="card">
+            <h3>✅ Confirm a human</h3>
+            <p>If the pattern looks natural, Bleenkz counts it as presence. Bots struggle to mimic this.</p>
+          </div>
+          <div class="card">
+            <h3>🎯 Earn a tiny reward</h3>
+            <p>Valid signals slowly add to your balance. There are limits so it stays fair.</p>
+          </div>
         </div>
       </div>
-    </div>
-    <canvas id="canvas" style="display: none"></canvas>
+    </section>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-    <script src="ui.js"></script>
+    <section class="section section-what" id="what">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">What is Bleenkz?</h2>
+          <p class="section-subtitle">Bleenkz is a tiny web tool that proves a person is here using blinks - private, lightweight, and useful for apps.</p>
+        </div>
+        <div class="split-inner one-col">
+          <div class="split-col text">
+            <div class="grid-3" style="grid-template-columns: 1fr; gap: var(--gap)">
+              <div class="card tilt">
+                <h3>Private by design</h3>
+                <p>Everything runs in your browser. No personal data leaves your device.</p>
+              </div>
+              <div class="card tilt">
+                <h3>Simple to add</h3>
+                <p>Websites can use Bleenkz checks to keep experiences friendly and reduce spam.</p>
+              </div>
+              <div class="card tilt">
+                <h3>Helpful rewards</h3>
+                <p>Small rewards recognize real activity over time - not one-time clicks.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-usecases" id="use-cases">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Use Cases</h2>
+          <p class="section-subtitle">Where Bleenkz helps the most.</p>
+        </div>
+        <div class="container grid-3 stagger">
+          <div class="card tilt">
+            <h3>Sign-up protection</h3>
+            <p>Light presence checks reduce bots while staying friendly to real users.</p>
+          </div>
+          <div class="card tilt">
+            <h3>Learning and media</h3>
+            <p>Reward steady attention in courses or streams over time - not spam clicks.</p>
+          </div>
+          <div class="card tilt">
+            <h3>Wellbeing prompts</h3>
+            <p>Optional blink and rest nudges that reduce eye strain during long sessions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-token" id="token">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Token & Rewards</h2>
+          <p class="section-subtitle">Simple, transparent earning aligned to authentic activity.</p>
+        </div>
+        <div class="timeline" style="display: grid; gap: var(--gap)">
+          <div class="card">
+            <h3>Accrual</h3>
+            <p>Earn small amounts of $BLNKZ per valid blink event. Session caps and cooldowns prevent farming.</p>
+          </div>
+          <div class="card">
+            <h3>Utility</h3>
+            <p>Redeem for perks, boosts, or cross‑app benefits. Integrate with dApps via attestations.</p>
+          </div>
+          <div class="card">
+            <h3>Integrity</h3>
+            <p>Anti‑automation heuristics and anomaly detection; privacy‑preserving checks without identity reveal.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-roadmap" id="roadmap">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Roadmap</h2>
+          <p class="section-subtitle">What’s coming next.</p>
+        </div>
+        <div class="steps">
+          <div class="card">
+            <span class="badge">1</span>
+            <div>
+              <h3>SDKs</h3>
+              <p>Developer SDKs and attestations for web and mobile.</p>
+            </div>
+          </div>
+          <div class="card">
+            <span class="badge">2</span>
+            <div>
+              <h3>PWA & mobile</h3>
+              <p>Background presence with low‑power modes and better ergonomics.</p>
+            </div>
+          </div>
+          <div class="card">
+            <span class="badge">3</span>
+            <div>
+              <h3>Community</h3>
+              <p>Open integrations, partner rewards, and shared research.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-faq" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">FAQ</h2>
+          <p class="section-subtitle">Quick answers to common questions.</p>
+        </div>
+        <div class="faq-list">
+          <details class="card">
+            <summary><strong>Do you store biometrics?</strong></summary>
+            <p class="muted">No. Detection runs locally; we don’t store photos, videos, or biometric templates.</p>
+          </details>
+          <details class="card">
+            <summary><strong>How do I integrate?</strong></summary>
+            <p class="muted">Start with the web app, then plug the client events into your app surface via simple hooks.</p>
+          </details>
+          <details class="card">
+            <summary><strong>How does $BLNKZ work?</strong></summary>
+            <p class="muted">Accrual is tied to validated presence events with safeguards against abuse.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+        <span>© <span id="y"></span> Bleenkz</span>
+        <div style="display: flex; gap: 12px">
+          <a href="/app">Open App</a>
+          <a href="https://mercury-fenugreek-aa8.notion.site/Bleenkz-Behavioral-Proof-of-Humanity-Layer-27216a000624806cad7ed3af1f526346?pvs=74" target="_blank" rel="noreferrer">Docs</a>
+        </div>
+      </div>
+      <script>
+        document.getElementById("y").textContent = new Date().getFullYear();
+      </script>
+    </footer>
   </body>
 </html>
