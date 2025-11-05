@@ -6,8 +6,8 @@ class BlinkCounter {
     this.lastBlinkTime = 0;
     this.blinkTimes = [];
     this.isBlinking = false;
-    this.eyeClosedThreshold = 0.2;
-    this.eyeOpenThreshold = 0.28;
+    this.eyeClosedThreshold = 0.24;
+    this.eyeOpenThreshold = 0.26;
     this.baselineEAR = 0.3; // Baseline eye aspect ratio when eyes are open
     this.earHistory = []; // Store recent EAR values for dynamic adjustment
     this.faceMesh = null;
@@ -200,9 +200,11 @@ class BlinkCounter {
         const p75EAR = sortedEAR[Math.min(p75Index, sortedEAR.length - 1)];
         this.baselineEAR = p75EAR;
 
-        // More sensitive dynamic thresholds with clear hysteresis
-        this.eyeClosedThreshold = this.baselineEAR * 0.72;
-        this.eyeOpenThreshold = this.baselineEAR * 0.88;
+        // More permissive thresholds with clear hysteresis
+        // Higher closed threshold = easier to register a blink
+        // Lower open threshold = easier to end a blink
+        this.eyeClosedThreshold = this.baselineEAR * 0.78;
+        this.eyeOpenThreshold = this.baselineEAR * 0.86;
       }
 
       // Apply slight smoothing to reduce noise
